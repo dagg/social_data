@@ -6,3 +6,5 @@ This project was created for personal use and it's only here for display purpose
 This project is made with Python Flask and it is initialized by running the `__init__.py` file
 
 The `social_data_DB_schema.sql` shows the database schema and the stored procedures/functions used.
+
+The `DAO/dao.py` file contains all the queries to the database.

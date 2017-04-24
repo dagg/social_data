@@ -1,0 +1,180 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+
+
+
+
+{% if company %}
+
+
+<script type="text/javascript">
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Social Media Statistics'
+        },
+        subtitle: {
+            text: 'Number of Characters,  tweets, favorites and retweets in Twitter for the period between {{since}} and {{until}}'
+        },
+        xAxis: {
+            categories: [{% for tw in tweets %}{% if tw['charrange'] != None %}'{{ tw['charrange'] }}',{% endif%}{% endfor %}],
+            title: {
+                text: 'Number of Characters'
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Hits (thousands)',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' '
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 160,
+            floating: true,
+            draggable: true,
+            title: {
+                text: ':: Data'
+            },
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true,
+            zIndex: 2000
+        },
+        credits: {
+            enabled: false
+        },
+        series: [
+        {% if qaction == 'Aggregate' or qaction == 'Tweets' %}
+        {
+            name: 'Tweets',
+            data: [{% for tw in tweets %}{% if tw['charrange'] != None and tw['tweets'] != None %}{{ tw['tweets'] }},{% endif %}{% endfor %}]
+        },
+        {% endif %}
+        {% if qaction == 'Aggregate' or qaction == 'Favorites' %}
+        {
+            name: 'Favorites',
+            data: [{% for tw in tweets %}{% if tw['charrange'] != None and tw['favorites'] != None %}{{ tw['favorites'] }},{% endif %}{% endfor %}]
+        },
+        {% endif %}
+        {% if qaction == 'Aggregate' or qaction == 'Retweets' %}
+        {
+            name: 'Retweets',
+            data: [{% for tw in tweets %}{% if tw['charrange'] != None and tw['retweets'] != None %}{{ tw['retweets'] }},{% endif %}{% endfor %}]
+        }{% endif %}
+        ]
+    });
+});
+</script>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jq-2.2.0,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,kt-2.1.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/t/dt/jq-2.2.0,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,kt-2.1.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#fbtable').DataTable({
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+      dom: 'B<"clear">lfrtip',
+      buttons: {
+          name: 'primary',
+          buttons: [ 'copy', 'csv', 'excel', 'pdf' ]
+      }
+    });
+} );
+</script>
+
+
+
+
+
+<div>
+
+<table id="fbtable" class="table table-hover table table-striped table-bordered" cellspacing="0" width="100%" >
+<caption>Twitter Number of Characters Results for the period between {{since}} and {{until}}. </caption>
+<thead>
+  <th>#</th>
+  <!-- <th>id</th> -->
+  <th>Company</th>
+  <th>Number of Characters</th>
+  {% if qaction == 'Aggregate' or qaction == 'Tweets' %}
+  <th>Tweets</th>
+  {% endif %}
+  {% if qaction == 'Aggregate' or qaction == 'Favorites' %}
+  <th>Favorites</th>
+  {% endif %}
+  {% if qaction == 'Aggregate' or qaction == 'Retweets' %}
+  <th>Retweets</th>
+  {% endif %}
+</thead>
+<tbody>
+{% for tw in tweets %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{tw["company"]}}</td>
+    <td>{{tw["charrange"]}}</td>
+    {% if qaction == 'Aggregate' or qaction == 'Tweets' %}
+    <td>{{tw["tweets"]}}</td>
+    {% endif %}
+    {% if qaction == 'Aggregate' or qaction == 'Favorites' %}
+    <td>{{tw["favorites"]}}</td>
+    {% endif %}
+    {% if qaction == 'Aggregate' or qaction == 'Retweets' %}
+    <td>{{tw["retweets"]}}</td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+
+
+
+
+{% if company %}
+
+<div id="container" style="min-width: 900px; max-width: 1200px; height: {% set lngth = tweets|length %}{%if lngth > 5 %}{{ lngth * 100 }}px{% else %}450px{% endif %}; margin: 0 auto"></div>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://rawgithub.com/highslide-software/draggable-legend/master/draggable-legend.js"></script>
+
+
+{% endif %}
+
+
+
+{% endblock %}

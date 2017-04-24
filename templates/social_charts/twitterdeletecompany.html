@@ -1,0 +1,24 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+<script type="text/javascript">
+	// $(document).ready(function() {
+	// 	$('#example').confirmation(options);
+	// 	$('[data-toggle="confirmation"]').confirmation(options);
+	// } );
+</script>
+<div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Select Twitter company to delete (Use with caution)
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    {% for company in fbs %}
+    <li><a href="/deletetwittercompany/?company={{ company[0]}}">{{ company[0]}}</a></li>
+    {% endfor %}
+<!--     <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li> -->
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+
+<link rel="stylesheet" href="/static/css/bootstrap-datepicker.min.css">
+<script src="/static/js/bootstrap-datepicker.min.js"></script>
+<script src="/static/locales/bootstrap-datepicker.el.min.js" charset="UTF-8"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.input-daterange').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        // language: "el",
+        autoclose: true,
+        todayHighlight: true
+    });
+  });
+</script>
+
+
+<body>
+  <div class="container">
+    <br/>
+    <h4>Give the company's twitter name:</h4>
+    <br/>
+    <form action="" class="form-inline" method="post">
+    <span class="input-group-addon" style="width:250px; text-align: left;">
+      <div class="form-group">
+        <label for="branch">Select company's branch:</label>
+        <select class="form-control" id="branch" name="branch">
+        {% for branch in branches %}
+          <option value="{{ branch[0]}}">{{ branch[1]}}</option>
+        {% endfor %}
+        </select>
+      </div>
+      <br /><br />
+      <label for="company">Give company's name:</label>
+      <input type="text" class="form-control" placeholder="Company" name="company" id="company" value="{{request.form.company}}">
+      &nbsp;&nbsp;&nbsp;
+      <label for="nodelete">Do not delete old posts:</label>
+      <input id="nodelete" name="nodelete" type="checkbox" aria-label="...">
+    </span>
+      <br/><br/>
+                <div class="input-daterange input-group" id="datepicker" >
+                    <span class="input-group-addon" >from</span>
+                    <input type="text" class="form-control" name="since" value="{{request.form.since}}"/>
+                    <span class="input-group-addon" >to</span>
+                    <input type="text" class="form-control" name="until" value="{{request.form.until}}"/>
+                </div>
+      <br/><br/>
+      <input class="btn btn-default" type="submit" value="Search">
+    </form>
+    <p>{% if error %}{{error}}{% endif %}</p>
+  </div>
+</body>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "header.html" %}
+
+{% block body %}
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/s/bs-3.3.5/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-colvis-1.1.0,b-html5-1.1.0,b-print-1.1.0,r-2.0.0,se-1.1.0/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/s/bs-3.3.5/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-colvis-1.1.0,b-html5-1.1.0,b-print-1.1.0,r-2.0.0,se-1.1.0/datatables.min.js"></script> -->
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jq-2.2.0,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,kt-2.1.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/t/dt/jq-2.2.0,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,kt-2.1.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.js"></script>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#gptable').DataTable({
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+      dom: 'B<"clear">lfrtip',
+      buttons: {
+          name: 'primary',
+          buttons: [ 'copy', 'csv', 'excel', 'pdf' ]
+      }
+    });
+} );
+</script>
+
+<div>
+
+<table id="gptable" class="table table-hover table table-striped table-bordered" cellspacing="0" width="100%" >
+<caption>G+ Results for company: "{{ pluses[0][8] }}"</caption>
+<thead>
+  <th>#</th>
+  <!-- <th>id</th> -->
+  <th>created_date</th>
+  <th>Day</th>
+  <th>Day Type</th>
+  <!-- <th>updated date</th> -->
+  <th>title</th>
+  <th>title characters</th>
+  <th>title words</th>
+  <th>content</th>
+  <th>content words</th>
+  <th>content characters</th>
+  <th>comments</th>
+  <th>likes</th>
+  <th>shares</th>
+  <th>type</th>
+</thead>
+<tbody>
+{% for plus in pluses %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{plus[0]}}</td>
+    <td>{{plus[0]|getweekday}}</td>
+    <td>{% if plus[0]|getweekday == 'Sunday' or plus[0]|getweekday == 'Saturday' %}Weekend{% else %}Weekday{% endif %}</td>
+    <!-- <td>{{plus[1]}}</td> -->
+    <td>{{plus[7]}}</td>
+    <td>{% if plus[7] %}{{ plus[7]|length }}{% endif %}</td>
+    <td>{% if plus[7] %}{{ plus[7]|wordcount }}{% endif %}</td>
+    <td>{{plus[6]}}</td>
+    <td>{% if plus[6] %}{{ plus[6]|length }}{% endif %}</td>
+    <td>{% if plus[6] %}{{ plus[6]|wordcount }}{% endif %}</td>
+    <td>{{plus[2]}}</td>
+    <td>{{plus[3]}}</td>
+    <td>{{plus[4]}}</td>
+    <td>{{plus[5]}}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

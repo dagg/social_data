@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html {% if bg=='full' %}class="full"{% else %} class="full" {% endif %}>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if title %}{{title}}{% else %}Social Networks Data Retrieval{% endif %}</title>
+    <!-- <strong><link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"></strong> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/404nf_32x32.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables.bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+<style type="text/css">
+  /*!
+ * Start Bootstrap - The Big Picture HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+body {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  background: none;
+}
+
+.full {
+  background: url({{ url_for('static', filename='images/quiraing-scotland.jpg') }}) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.transparent{
+  background:rgba(220, 220, 220,0.8);
+}
+
+
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+</style>
+
+  </head>
+  <header>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        <img style="max-width:220px; min-height: 136px; margin-top: -15px;" src="{{ url_for('static', filename='images/anna_b.jpg') }}">
+      </a>
+    </div>
+    
+<!--       <a href="/facebookform/">
+        <button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top: 5px; margin-bottom: 5px; height: 44px; margin-right: 15px">
+        <span class="fa fa-facebook" aria-hidden="true"></span> Facebook
+        </button>
+      </a>
+
+
+<div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="fa fa-facebook" aria-hidden="true"></span> Charts <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="/facebookcharts/?param=posts">Posts</a></li>
+    <li><a href="/facebookcharts/?param=likes">Likes</a></li>
+    <li><a href="/facebookcharts/?param=shares">Shares</a></li>
+    <li><a href="/facebookcharts/?param=comments">Comments</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="/facebookcharts/?param=aggregate">Aggregate</a></li>
+  </ul>
+</div> -->
+
+
+{% include 'navbar.html' %}
+
+
+
+<!--       <a href="/twitterform/">
+        <button type="button" class="btn btn-info" aria-label="Left Align" style="margin-top: 5px; margin-bottom: 5px; height: 44px; margin-right: 15px">
+        <span class="fa fa-twitter" aria-hidden="true"></span> Twitter
+        </button>
+      </a>
+      <a href="/googleplusform/">
+        <button type="button" class="btn btn-danger" aria-label="Left Align" style="margin-top: 5px; margin-bottom: 5px; height: 44px; margin-right: 15px">
+        <span class="fa fa-google-plus" aria-hidden="true"></span> Google+
+        </button>
+      </a> -->
+<!--       <ul class="nav navbar-nav navbar-right">
+        <div style="margin-right: 10px; margin-left: 15px; margin-top: 5px; margin-bottom: 5px;" class="container-fluid">
+          
+          <a href="/support-donate/"> <span class="glyphicon glyphicon-heart"></span> Support&nbsp;&nbsp;&nbsp;</a>
+          
+          <a href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login&nbsp;&nbsp;&nbsp;</a>
+
+      </ul> -->
+    </div>
+  </header>
+  <body>
+    <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <!-- script type="text/javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script -->
+    <!-- script type="text/javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap.min.js') }}"></script -->
+    <!-- <div class="border-row" style="width:100%; margin-bottom: 15px"></div> -->
+    <br/><br/><br/>
+    <div class="container {% if bg!='full' %}transparent{% endif %}" style="padding: 50px 30px 50px 30px; min-height:100%; min-width: 95%">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+      {% block body %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

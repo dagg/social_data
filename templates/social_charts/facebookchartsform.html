@@ -1,0 +1,61 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+<link rel="stylesheet" href="/static/css/bootstrap-datepicker.min.css">
+<script src="/static/js/bootstrap-datepicker.min.js"></script>
+<script src="/static/locales/bootstrap-datepicker.el.min.js" charset="UTF-8"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+  $('.input-daterange').datepicker({
+      format: "dd/mm/yyyy",
+      todayBtn: "linked",
+      clearBtn: true,
+      // language: "el",
+      autoclose: true,
+      todayHighlight: true
+  });
+            // When the document is ready
+                
+                // $('.input-daterange').datepicker({
+                //     todayBtn: "linked"
+                // });
+            
+  });
+</script>
+
+  <div class="container">
+    <br/>
+    <h4>Give the date range and the type of the Facebook chart below:</h4>
+    <br/>
+    <form action="" class="form-inline" method="post">
+                <div class="input-daterange input-group" id="datepicker" >
+                    <input type="text" class="form-control" name="since" value="{{request.form.since}}"/>
+                    <span class="input-group-addon" >to</span>
+                    <input type="text" class="form-control" name="until" value="{{request.form.until}}"/>
+                </div>
+      <br/><br/>
+
+      <div class="form-group">
+        <label for="param">Select type of chart:</label>
+        <select class="form-control" name="param" id="params">
+          <option value="aggregate" selected="true">Aggregate</option>
+          <option value="posts">Posts</option>
+          <option value="likes">Likes</option>
+          <option value="shares">Shares</option>
+          <option value="comments">Comments</option>
+        </select>
+      </div>
+      
+      <br/><br/>
+      <input class="btn btn-default" type="submit" value="Search">
+      <input type="hidden" name="chart_type" value="{{chart_type}}">
+    </form>
+
+    <p>{% if error %}{{error}}{% endif %}</p>
+  </div>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,117 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+<script type="text/javascript">
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Social Media Statistics'
+        },
+        subtitle: {
+            text: 'Number of Favorites in Twitter for each company for the period between {{since}} and {{until}}'
+        },
+        xAxis: {
+            categories: [{% for tw in twitters %}'{{ tw[0] }}',{% endfor %}],
+            title: {
+                text: 'Companies'
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Hits (thousands)',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' '
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 160,
+            floating: true,
+            draggable: true,
+            title: {
+                text: ':: Data'
+            },
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true,
+            zIndex: 2000
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'Favorites',
+            data: [{% for tw in twitters %}{{ tw[1] }},{% endfor %}]
+        }]
+    });
+});
+</script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jq-2.2.0,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,kt-2.1.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/t/dt/jq-2.2.0,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,kt-2.1.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#twtable').DataTable({
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+      dom: 'B<"clear">lfrtip',
+      buttons: {
+          name: 'primary',
+          buttons: [ 'copy', 'csv', 'excel', 'pdf' ]
+      }
+    });
+} );
+</script>
+
+
+<div>
+
+<table id="twtable" class="table table-hover table table-striped table-bordered" cellspacing="0" width="100%" >
+<caption>Twitter Favorites Results for the period between {{since}} and {{until}}</caption>
+<thead>
+  <th>#</th>
+  <!-- <th>id</th> -->
+  <th>Company</th>
+  <th>Favorites</th>
+</thead>
+<tbody>
+{% for tw in twitters %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{tw[0]}}</td>
+    <td>{{tw[1]}}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+
+<div id="container" style="min-width: 900px; max-width: 1200px; height: {% set lngth = twitters|length %}{%if lngth > 5 %}{{ lngth * 100 }}px{% else %}450px{% endif %}; margin: 0 auto"></div>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://rawgithub.com/highslide-software/draggable-legend/master/draggable-legend.js"></script>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "header.html" %}
+
+{% block body %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart','bar']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Facebook Stats', 'Posts', 'Likes', 'Shares', 'Comments'],
+          {% for fb in fbs %}
+            {% set x = 0 %}
+            [{% for f in fb %}{% if x == 0 %}'{{f}}'{% else %}{{f}}{% endif %}, {% set x = x + 1 %}{% endfor %}],
+          {% endfor %}
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Social Media Statistics',
+            subtitle: 'Number of posts, likes, shares and comments in Facebook for each company for the period between {{since}} and {{until}}',
+          },
+          // bars: 'vertical',
+          hAxis: {format: 'decimal'},
+          // isStacked : 'true',
+          width: 1000, 
+          height: {% set lngth = fbs|length %}{%if lngth > 5 %}{{ lngth * 80 }}{% else %}450{% endif %},
+          bars: 'horizontal'
+          // colors: ['#1b9e77', '#d95f02', '#7570b3']
+          // enableInteractivity: false
+        };
+
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+        // var chart = new google.visualization.BarChart(document.getElementById('columnchart_material'));
+        google.visualization.events.addListener(chart, 'ready', allReady);// ADD LISTENER
+        chart.draw(data, options);
+      }
+
+function allReady() {
+    var e = document.getElementById('columnchart_material');
+    // svg elements don't have inner/outerHTML properties, so use the parents
+    // alert(e.getElementsByTagName('svg')[0].parentNode.innerHTML);
+    mydiv = document.getElementById("svgchart");
+    mydiv.innerHTML += e.getElementsByTagName('svg')[0].parentNode.innerHTML;
+}
+    </script>
+
+
+
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/s/bs-3.3.5/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-colvis-1.1.0,b-html5-1.1.0,b-print-1.1.0,r-2.0.0,se-1.1.0/datatables.min.css"/> -->
+ 
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/s/bs-3.3.5/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.10,b-1.1.0,b-colvis-1.1.0,b-html5-1.1.0,b-print-1.1.0,r-2.0.0,se-1.1.0/datatables.min.js"></script> -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/jq-2.2.0,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,kt-2.1.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/t/dt/jq-2.2.0,jszip-2.5.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-flash-1.1.2,b-html5-1.1.2,b-print-1.1.2,kt-2.1.1,r-2.0.2,sc-1.4.1,se-1.1.2/datatables.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#fbtable').DataTable({
+      "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+      dom: 'B<"clear">lfrtip',
+      buttons: {
+          name: 'primary',
+          buttons: [ 'copy', 'csv', 'excel', 'pdf' ]
+      }
+    });
+} );
+</script>
+
+
+<div>
+
+<table id="fbtable" class="table table-hover table table-striped table-bordered" cellspacing="0" width="100%" >
+<caption>Facebook Aggregate Results for the period between {{since}} and {{until}}</caption>
+<thead>
+  <th>#</th>
+  <!-- <th>id</th> -->
+  <th>Company</th>
+  <th>Posts</th>
+  <th>Likes</th>
+  <th>Shares</th>
+  <th>Comments</th>
+</thead>
+<tbody>
+{% for fb in fbs %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <!-- <td>{{fb[0]}}</td> -->
+    <td>{{fb[0]}}</td>
+    <td>{{fb[1]}}</td>
+    <td>{{fb[2]}}</td>
+    <td>{{fb[3]}}</td>
+    <td>{{fb[4]}}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+
+
+
+
+    <div id="columnchart_material" style="width: 900px; height: {{ (lngth * 120)+50 }}px;"></div>
+<br/><br/><br/><br/><br/>
+<div id="svgchart" style="display: none;"></div>
+{% endblock %}

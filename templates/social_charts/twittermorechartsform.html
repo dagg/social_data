@@ -1,0 +1,84 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+<link rel="stylesheet" href="/static/css/bootstrap-datepicker.min.css">
+<script src="/static/js/bootstrap-datepicker.min.js"></script>
+<script src="/static/locales/bootstrap-datepicker.el.min.js" charset="UTF-8"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+  $('.input-daterange').datepicker({
+      format: "dd/mm/yyyy",
+      todayBtn: "linked",
+      clearBtn: true,
+      // language: "el",
+      autoclose: true,
+      todayHighlight: true
+  });
+            // When the document is ready
+                
+                // $('.input-daterange').datepicker({
+                //     todayBtn: "linked"
+                // });
+            
+  });
+</script>
+
+  <div class="container">
+    <br/>
+    <h3>{{title}}</h3>
+    <br/>
+    <form action="" class="form-inline" method="post">
+
+        <div class="form-group">
+        {% if nocompany != 1 %}
+          <label for="company">Select a company from the list (optional):</label>
+          <select class="form-control" id="company" name="company">
+          <option value=""></option>
+          {% for company in tweets %}
+            <option value="{{ company[0]}}">{{ company[0]}}</option>
+          {% endfor %}
+          </select>
+          <br/><br/>
+        {% endif %}
+        <div class="form-group">
+          <label for="branch">Select company's branch:</label>
+          <select class="form-control" id="branch" name="branch">
+          <option value=""></option>
+          {% for branch in branches %}
+            <option value="{{ branch[0]}}">{{ branch[1]}}</option>
+          {% endfor %}
+          </select>
+        </div>
+        </div><br/><br/><br/>
+                <label for="company">{{msg}}</label><br/>
+                <div class="input-daterange input-group" id="datepicker" >
+                    <span class="input-group-addon" >From</span>
+                    <input type="text" class="form-control" name="since" value="{{request.form.since}}"/>
+                    <span class="input-group-addon" >to</span>
+                    <input type="text" class="form-control" name="until" value="{{request.form.until}}"/>
+                </div>
+      <br/><br/>
+
+      <div class="form-group" {% if notlist==1 %}style="display: none;"{% endif %}>
+        <label for="param">Select type of chart:</label>
+        <select class="form-control" name="param" id="params">
+          <option value="Aggregate" selected="true">Aggregate</option>
+          <option value="Tweets">Tweets</option>
+          <option value="Favorites">Favorites</option>
+          <option value="Retweets">Retweets</option>
+        </select>
+      </div>
+      
+      <br/><br/>
+      <input class="btn btn-default" type="submit" value="Search">
+      <input type="hidden" name="chart_type" value="{{chart_type}}">
+    </form>
+
+    <p>{% if error %}{{error}}{% endif %}</p>
+  </div>
+
+{% endblock %}
+
+
+
